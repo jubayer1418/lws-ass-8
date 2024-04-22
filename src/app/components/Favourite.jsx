@@ -21,6 +21,7 @@ const Favourite = ({ id }) => {
       const data = await addFavorite(userId, id);
       setAuth(data);
     } else {
+      localStorage.setItem("id",id)
       router.push("/login");
     }
   };

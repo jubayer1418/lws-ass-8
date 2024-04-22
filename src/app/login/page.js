@@ -24,7 +24,13 @@ const LoginPage = () => {
 
             if (found) {
                 setAuth(found);
-                router.push('/');
+               if( localStorage.getItem("id")){
+                router.push(`/details/${localStorage.getItem('id')}`);
+                localStorage.clear()
+               }else{
+
+                 router.push('/');
+               }
             } else {
                 setError('Please provide a valid login credential');
             }
