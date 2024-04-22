@@ -19,7 +19,7 @@ const LoginPage = () => {
         event.preventDefault();
         try {
             const formData = new FormData(event.currentTarget);
-            await dbConnect();
+           
             const found = await loginUser(formData)
 
             if (found) {

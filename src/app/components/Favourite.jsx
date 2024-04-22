@@ -12,12 +12,12 @@ const Favourite = ({ id }) => {
   const isfav = auth?.favourites.includes(id);
 
   const handlefav = async (userId) => {
+    console.log("click");
+
     if (isfav) {
-      await dbConnect();
       const data = await removeFavorite(userId, id);
       setAuth(data);
     } else if (auth && !isfav) {
-      await dbConnect();
       const data = await addFavorite(userId, id);
       setAuth(data);
     } else {
@@ -27,7 +27,9 @@ const Favourite = ({ id }) => {
   return (
     <div
       onClick={() => handlefav(auth?._id)}
-      className={`flex gap-2  ${isfav ? "text-red-600" : "text-gray-600" }  cursor-pointer hover:text-[#eb4a36]`}
+      className={`flex gap-2  ${
+        isfav ? "text-red-600" : "text-gray-600"
+      }  cursor-pointer hover:text-[#eb4a36]`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

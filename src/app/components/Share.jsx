@@ -4,7 +4,7 @@ import SharePopup from "./SharePopup";
 
 function Share({id}) {
     const [showSharePopup, setShowSharePopup] = useState(false);
-    const pageUrl = 'https://lws-assignment-7.vercel.app/en';
+    const pageUrl = `https://lws-ass-8.vercel.app/details/${id}`;
     const pageTitle = 'My Page Title';
 
     const toggleSharePopup = () => {

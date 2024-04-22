@@ -2,12 +2,13 @@
 
 
 import { UserModel } from "@/model/users";
+import { dbConnect } from "@/server/db";
 import { redirect } from "next/navigation";
 
 export const registerUser = async (formData) => {
   try {
     const user = Object.fromEntries(formData);
-
+    await dbConnect();
     await UserModel.create(user);
     redirect("/login");
   } catch (error) {
@@ -18,7 +19,7 @@ export const  loginUser=async(formData)=> {
     try {
         const {email,password} = Object.fromEntries(formData);
 
-
+        await dbConnect();
       const user = await UserModel.findOne({ email });
       
       if (!user) {
@@ -38,6 +39,7 @@ export const  loginUser=async(formData)=> {
   async function addFavorite(userId, recipeId) {
 
     try {
+      await dbConnect();
       const user = await UserModel.findById(userId);
      
       if (!user) {
@@ -58,6 +60,7 @@ export const  loginUser=async(formData)=> {
 
   export async function removeFavorite(userId, recipeId) {
     try {
+      await dbConnect();
       const user = await UserModel.findById(userId);
       if (!user) {
         throw new Error("User not found");
