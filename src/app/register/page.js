@@ -1,9 +1,11 @@
 
 
 import { registerUser } from "@/db/action";
+import { dbConnect } from "@/server/db";
 import Link from "next/link";
 
-const SignUpPage = () => {
+const SignUpPage = async() => {
+  await dbConnect();
   return (
     <main className="">
       <section className="h-screen grid place-items-center">

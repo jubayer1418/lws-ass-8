@@ -48,6 +48,6 @@ const recipeSchema = new mongoose.Schema({
   }
 });
 
-export const RecipeModel =mongoose.models.recipes ?? mongoose.model('recipes', recipeSchema);
+export const RecipeModel =mongoose.models.recipes || mongoose.model('recipes', recipeSchema);
 
 

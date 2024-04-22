@@ -1,23 +1,27 @@
 'use client'
 import { loginUser } from "@/db/action";
 import { useAuth } from "@/hooks/useAuth";
+import { dbConnect } from "@/server/db";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 
 const LoginPage = () => {
+
   const [error, setError] = useState("");
 
     const { setAuth } = useAuth();
     const router = useRouter();
 
     async function onSubmit(event) {
+    
         event.preventDefault();
         try {
             const formData = new FormData(event.currentTarget);
+            await dbConnect();
             const found = await loginUser(formData)
-console.log(found)
+
             if (found) {
                 setAuth(found);
                 router.push('/');

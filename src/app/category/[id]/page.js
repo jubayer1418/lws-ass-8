@@ -1,5 +1,6 @@
 import RecipeCard from "@/app/components/Home/RecipeCard";
 import { db } from "@/db";
+import { dbConnect } from "@/server/db";
 export async function generateMetadata({ params, searchParams }, parent) {
   // read route params
   const id = params.id;
@@ -11,6 +12,7 @@ export async function generateMetadata({ params, searchParams }, parent) {
   };
 }
 async function page({ params: { id } }) {
+  await dbConnect();
   const categories = await db.findRecipesByCategory(decodeURIComponent(id));
 
   return (

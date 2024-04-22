@@ -2,6 +2,7 @@
 
 import addFavorite, { removeFavorite } from "@/db/action";
 import { useAuth } from "@/hooks/useAuth";
+import { dbConnect } from "@/server/db";
 import { useRouter } from "next/navigation";
 
 const Favourite = ({ id }) => {
@@ -12,9 +13,11 @@ const Favourite = ({ id }) => {
 
   const handlefav = async (userId) => {
     if (isfav) {
+      await dbConnect();
       const data = await removeFavorite(userId, id);
       setAuth(data);
     } else if (auth && !isfav) {
+      await dbConnect();
       const data = await addFavorite(userId, id);
       setAuth(data);
     } else {
