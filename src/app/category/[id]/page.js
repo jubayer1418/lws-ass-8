@@ -11,6 +11,16 @@ export async function generateMetadata({ params, searchParams }, parent) {
       "A recipe is simply defined as a set of instructions with a list of ingredients used to prepare a particular food, dish or drink. People use recipes to replicate foods they enjoy that they otherwise do not know how to make. Chefs use recipes to make sure a dish tastes the same each time it is ordered.",
   };
 }
+
+export const generateStaticParams = async () => {
+  await dbConnect();
+  const {recipes} = await db.AllRecipes();
+
+  return recipes.map((recipe) => ({
+    category: recipe.category,
+    id:recipe.id
+  }));
+};
 async function page({ params: { id } }) {
   await dbConnect();
   const categories = await db.findRecipesByCategory(decodeURIComponent(id));
