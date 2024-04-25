@@ -41,7 +41,9 @@ export const loginUser = async (formData) => {
 
     return await UserModel.findOne({ email }).lean();
   } catch (error) {
-    throw error;
+    return {
+      error: error.message,
+    };
   }
 };
 async function addFavorite(userId, recipeId) {
