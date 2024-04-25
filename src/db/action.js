@@ -1,79 +1,82 @@
 "use server";
 
-
 import { UserModel } from "@/model/users";
 import { dbConnect } from "@/server/db";
 import { redirect } from "next/navigation";
 
 export const registerUser = async (formData) => {
   try {
-    const user = Object.fromEntries(formData);
+    const userData = Object.fromEntries(formData);
     await dbConnect();
-    await UserModel.create(user);
-    redirect("/login");
-  } catch (error) {
-    return {
-      error:"Your email is already registered",
+    const user = await UserModel.findOne({ email: userData.email });
+    if (user) {
+      throw new Error("Your email is already registered !");
     }
+
+    await UserModel.create(userData);
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      error: error.message,
+    };
   }
 };
-export const  loginUser=async(formData)=> {
-    try {
-        const {email,password} = Object.fromEntries(formData);
+export const loginUser = async (formData) => {
+  try {
+    const { email, password } = Object.fromEntries(formData);
 
-        await dbConnect();
-      const user = await UserModel.findOne({ email });
-      
-      if (!user) {
-        throw new Error("User not found");
-      }
-      const isMatch = await user.comparePassword(password);
-      if (!isMatch) {
-        throw new Error("Incorrect password");
-      }
-      
-    return await UserModel.findOne({ email }).lean()
-      
-    } catch (error) {
-      throw error;
+    await dbConnect();
+    const user = await UserModel.findOne({ email });
+
+    if (!user) {
+      throw new Error("User not found");
     }
-  }
-  async function addFavorite(userId, recipeId) {
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      throw new Error("Incorrect password");
+    }
 
-    try {
-      await dbConnect();
-      const user = await UserModel.findById(userId);
-     
-      if (!user) {
-        throw new Error("User not found");
-      }
-      if (!user.favourites.includes(recipeId)) {
-      
-        user.favourites.push(recipeId);
+    return await UserModel.findOne({ email }).lean();
+  } catch (error) {
+    throw error;
+  }
+};
+async function addFavorite(userId, recipeId) {
+  try {
+    await dbConnect();
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+    if (!user.favourites.includes(recipeId)) {
+      user.favourites.push(recipeId);
       await user.save();
-      
-      }
-      return  await UserModel.findById(userId).lean();
-    } catch (error) {
-      return error;
     }
+    return await UserModel.findById(userId).lean();
+  } catch (error) {
+    return error;
   }
-  export default addFavorite
+}
+export default addFavorite;
 
-  export async function removeFavorite(userId, recipeId) {
-    try {
-      await dbConnect();
-      const user = await UserModel.findById(userId);
-      if (!user) {
-        throw new Error("User not found");
-      }
-      user.favourites = user.favourites.filter(
-        (id) => id.toString() !== recipeId
-      );
-      
-      await user.save();
-      return  await UserModel.findById(userId).lean();
-    } catch (error) {
-      return error;
+export async function removeFavorite(userId, recipeId) {
+  try {
+    await dbConnect();
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
     }
+    user.favourites = user.favourites.filter(
+      (id) => id.toString() !== recipeId
+    );
+
+    await user.save();
+    return await UserModel.findById(userId).lean();
+  } catch (error) {
+    return error;
   }
+}

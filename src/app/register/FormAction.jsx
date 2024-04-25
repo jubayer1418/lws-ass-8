@@ -1,20 +1,28 @@
 "use client";
 import { registerUser } from "@/db/action";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 function FormAction() {
+  const route =useRouter()
   return (
     <form
       className="login-form"
       action={async (formData) => {
-       const toastId= toast.loading("Waiting...");
+        const toastId = toast.loading("Waiting...");
         const result = await registerUser(formData);
 
         if (result.error) {
           toast.error(result.error, {
             id: toastId,
           });
+        }else if (result.success) {
+          toast.success("User Register successfully!", {
+            id: toastId,
+          });
+          route.push("/login")
         }
+       
       }}
     >
       <div>
