@@ -15,13 +15,17 @@ const LoginPage = () => {
     const toastId = toast.loading("Waiting...");
 
     event.preventDefault();
-    try {
+   
       const formData = new FormData(event.currentTarget);
 
       const found = await loginUser(formData);
-
-      if (found) {
-        setAuth(found);
+      if(found.error){
+        toast.error(found.error, {
+          id: toastId,
+        });
+        return;
+      }else if(found.success){
+        setAuth(found.data);
         toast.success("Login successful",{
           id: toastId,
         });
@@ -31,16 +35,8 @@ const LoginPage = () => {
         } else {
           router.push("/");
         }
-      } else {
-        toast.error("Please provide a valid login credential", {
-          id: toastId,
-        });
+
       }
-    } catch (err) {
-      toast.error(err.message, {
-        id: toastId,
-      });
-    }
   }
 
   return (

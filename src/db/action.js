@@ -38,8 +38,11 @@ export const loginUser = async (formData) => {
     if (!isMatch) {
       throw new Error("Incorrect password");
     }
-
-    return await UserModel.findOne({ email }).lean();
+   const data= await UserModel.findOne({ email }).lean();
+    return {
+      success: true,
+      data,
+    }
   } catch (error) {
     return {
       error: error.message,
