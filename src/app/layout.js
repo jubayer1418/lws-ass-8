@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./components/Home/Navbar";
 import { dbConnect } from "@/server/db";
 import AuthProvider from "@/provider/AuthProvider";
+import { Toaster } from "react-hot-toast";
 
 
 
@@ -29,6 +30,7 @@ export default async function RootLayout({ children }) {
           
           {children}
         </AuthProvider>
+        <Toaster />
       </body>
     </html>
   );

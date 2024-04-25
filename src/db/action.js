@@ -12,7 +12,9 @@ export const registerUser = async (formData) => {
     await UserModel.create(user);
     redirect("/login");
   } catch (error) {
-    throw error;
+    return {
+      error:"Your email is already registered",
+    }
   }
 };
 export const  loginUser=async(formData)=> {
@@ -53,7 +55,7 @@ export const  loginUser=async(formData)=> {
       }
       return  await UserModel.findById(userId).lean();
     } catch (error) {
-      throw error;
+      return error;
     }
   }
   export default addFavorite
@@ -68,9 +70,10 @@ export const  loginUser=async(formData)=> {
       user.favourites = user.favourites.filter(
         (id) => id.toString() !== recipeId
       );
+      
       await user.save();
       return  await UserModel.findById(userId).lean();
     } catch (error) {
-      throw error;
+      return error;
     }
   }

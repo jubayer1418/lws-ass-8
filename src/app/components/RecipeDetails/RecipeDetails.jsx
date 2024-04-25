@@ -25,7 +25,7 @@ const RecipeDetails = async({recipe,id}) => {
     <section>
       <div className="grid grid-cols-12 container gap-8 justify-items-center">
         <div className="col-span-12 md:col-span-6">
-          <Image src={image} alt="" width={600} height={600} className="w-full h-full rounded-lg object-contain" />
+          <Image src={thumbnail} alt="" width={600} height={600} className="w-full h-full rounded-lg object-contain" />
         </div>
         <div className="col-span-12 md:col-span-6 py-8 flex flex-col justify-center">
           <h2 className="font-semibold text-4xl lg:w-8/12 leading-10">{name}</h2>
